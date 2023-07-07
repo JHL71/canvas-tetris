@@ -1,10 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 
+interface objI {
+  x: number,
+  y: number,
+  type: number,
+  rotate: number
+}
+
 function App() {
   const cvRef = useRef<HTMLCanvasElement|null>(null);
+  const keyRef = useRef<HTMLDivElement|null>(null);
   const ctx: CanvasRenderingContext2D|null|undefined = cvRef.current?.getContext('2d');
   const [show, setShow] = useState<boolean>(false);
+  const [obj, setObj] = useState<objI>({
+    x: 2,
+    y: 10,
+    type: 7,
+    rotate: 0
+  });
   const board: any[][] = Array.from({length: 25}, (_, i) => i !== 24 
   ? Array.from({length: 12}, (_, i) => (i === 0 || i === 11) ? 255 : 0)
   : Array(12).fill(255));
@@ -28,47 +42,74 @@ function App() {
     }
   };
 
-  const drawFigure = (ctx:CanvasRenderingContext2D, x: number, y: number, type: number) => {
+  const drawFigure = (ctx:CanvasRenderingContext2D, x: number, y: number, type: number, rotate: number) => {
+    x *= 30;
+    y *= 30;
     ctx.beginPath();
     switch (type) {
       case 1:
-        ctx.rect(x - 30, y - 30, 60, 60);
+        ctx.rect(x, y, 60, 60);
         ctx.fillStyle = 'red';
         ctx.fill();
         break;
       case 2:
-        ctx.rect(x, y - 30, 30, 60);
-        ctx.rect(x + 30, y, 30, 60);
         ctx.fillStyle = 'orange';
+        if (rotate === 0) {
+          ctx.rect(x, y - 30, 30, 60);
+          ctx.rect(x + 30, y, 30, 60);
+        }
+        if (rotate === 1) {
+          ctx.rect(x - 30, y, 60, 30);
+          ctx.rect(x, y - 30, 60, 30);
+        }
+        if (rotate === 2) {
+          ctx.rect(x - 30, y - 30, 30, 60);
+          ctx.rect(x, y, 30, 60);
+        }
+        if (rotate === 3) {
+          ctx.rect(x, y, 60, 30);
+          ctx.rect(x - 30, y + 30, 60, 30);
+        }
         ctx.fill();
         break;
       case 3:
-        ctx.rect(x - 30, y, 30, 60);
-        ctx.rect(x, y - 30, 30, 60);
         ctx.fillStyle = 'yellow';
+        if (rotate === 0) {
+          ctx.rect(x - 30, y, 30, 60);
+          ctx.rect(x, y - 30, 30, 60);
+        }
         ctx.fill();
         break;
       case 4:
-        ctx.rect(x, y - 30, 60, 30);
-        ctx.rect(x, y, 30, 60);
         ctx.fillStyle = 'green';
+        if (rotate === 0) {
+          ctx.rect(x, y - 30, 60, 30);
+          ctx.rect(x, y, 30, 60);
+        }
         ctx.fill();
         break;
       case 5:
-        ctx.rect(x - 30, y - 30, 60, 30);
-        ctx.rect(x, y, 30, 60);
         ctx.fillStyle = 'blue';
+        if (rotate === 0) {
+          ctx.rect(x - 30, y - 30, 60, 30);
+          ctx.rect(x, y, 30, 60);
+        }
         ctx.fill();
         break;
       case 6:
-        ctx.rect(x - 30, y, 90, 30);
-        ctx.rect(x, y -30, 30, 30);
         ctx.fillStyle = 'indigo';
+        if (rotate === 0) {
+          ctx.rect(x - 30, y, 90, 30);
+          ctx.rect(x, y -30, 30, 30);
+        }
         ctx.fill();
         break;
       case 7:
-        ctx.rect(x - 30, y, 30, 120);
         ctx.fillStyle = 'purple';
+        if (rotate === 0) ctx.rect(x - 30, y, 120, 30);
+        if (rotate === 1) ctx.rect(x, y - 60, 30, 120);
+        if (rotate === 2) ctx.rect(x - 60, y, 120, 30);
+        if (rotate === 3) ctx.rect(x, y - 30, 30, 120);
         ctx.fill();
         break;
       default:
@@ -77,16 +118,46 @@ function App() {
     ctx.closePath();
   }
 
+  const control = (key: string) => {
+    switch (key) {
+      case 'w': case 'ArrowUp':
+        setObj({...obj, rotate: (obj.rotate + 1) % 4});
+        break;
+      case 'a':
+      case 'ArrowLeft':
+        setObj({...obj, x: obj.x - 1});
+        break;
+      case 's':
+      case 'ArrowDown':
+        setObj({...obj, y: obj.y + 1});
+        break;
+      case 'd':
+      case 'ArrowRight':
+        setObj({...obj, x: obj.x + 1});
+        break;
+      default:
+        break;
+    }
+  }
+
   useEffect(() => {
+    keyRef.current?.focus();
     if (ctx) {
       drawBoard(ctx)
-      drawFigure(ctx, 180, 300, 7);
+      drawFigure(ctx, obj.x, obj.y, obj.type, obj.rotate);
     }
   })
 
   return (
-    <div className='background'>
-      <canvas ref={cvRef} className='board' width={360} height={630} onClick={() => setShow(true)}></canvas>
+    <div className='background' onClick={() => keyRef.current?.focus()}>
+      <canvas ref={cvRef} className='board' width={360} height={630} onClick={() => {
+        setShow(true);
+        console.log(obj);
+        }}></canvas>
+      <div ref={keyRef} className='control' onKeyDown={(e) => {
+        console.log(e.key);
+        control(e.key);
+        }} tabIndex={0}></div>
     </div>
   );
 }
