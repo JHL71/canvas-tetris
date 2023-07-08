@@ -12,16 +12,15 @@ function App() {
   const cvRef = useRef<HTMLCanvasElement|null>(null);
   const keyRef = useRef<HTMLDivElement|null>(null);
   const ctx: CanvasRenderingContext2D|null|undefined = cvRef.current?.getContext('2d');
-  const [show, setShow] = useState<boolean>(false);
   const [obj, setObj] = useState<objI>({
     x: 2,
     y: 10,
     type: 7,
     rotate: 0
   });
-  const board: any[][] = Array.from({length: 25}, (_, i) => i !== 24 
+  const [board, setBoard] = useState<any[][]> (Array.from({length: 25}, (_, i) => i !== 24 
   ? Array.from({length: 12}, (_, i) => (i === 0 || i === 11) ? 255 : 0)
-  : Array(12).fill(255));
+  : Array(12).fill(255)))
 
   const drawBoard = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, 360, 630);
@@ -31,6 +30,34 @@ function App() {
         if (board[i+4][j] === 255) {
           ctx.rect(j * 30 + 5, i * 30 + 5, 20, 20);
           ctx.fillStyle = 'black';
+          ctx.fill();
+        } else if (board[i+4][j] === 1) {
+          ctx.rect(j * 30, i * 30, 30, 30);
+          ctx.fillStyle = 'red';
+          ctx.fill();
+        } else if (board[i+4][j] === 2) {
+          ctx.rect(j * 30, i * 30, 30, 30);
+          ctx.fillStyle = 'orange';
+          ctx.fill();
+        } else if (board[i+4][j] === 3) {
+          ctx.rect(j * 30, i * 30, 30, 30);
+          ctx.fillStyle = 'yellow';
+          ctx.fill();
+        } else if (board[i+4][j] === 4) {
+          ctx.rect(j * 30, i * 30, 30, 30);
+          ctx.fillStyle = 'green';
+          ctx.fill();
+        } else if (board[i+4][j] === 5) {
+          ctx.rect(j * 30, i * 30, 30, 30);
+          ctx.fillStyle = 'blue';
+          ctx.fill();
+        } else if (board[i+4][j] === 6) {
+          ctx.rect(j * 30, i * 30, 30, 30);
+          ctx.fillStyle = 'indigo';
+          ctx.fill();
+        } else if (board[i+4][j] === 7) {
+          ctx.rect(j * 30, i * 30, 30, 30);
+          ctx.fillStyle = 'purple';
           ctx.fill();
         } else {
           ctx.rect(j * 30, i * 30, 30, 30);
@@ -50,7 +77,6 @@ function App() {
       case 1:
         ctx.rect(x, y, 60, 60);
         ctx.fillStyle = 'red';
-        ctx.fill();
         break;
       case 2:
         ctx.fillStyle = 'orange';
@@ -70,7 +96,6 @@ function App() {
           ctx.rect(x, y, 60, 30);
           ctx.rect(x - 30, y + 30, 60, 30);
         }
-        ctx.fill();
         break;
       case 3:
         ctx.fillStyle = 'yellow';
@@ -78,7 +103,6 @@ function App() {
           ctx.rect(x - 30, y, 30, 60);
           ctx.rect(x, y - 30, 30, 60);
         }
-        ctx.fill();
         break;
       case 4:
         ctx.fillStyle = 'green';
@@ -86,7 +110,6 @@ function App() {
           ctx.rect(x, y - 30, 60, 30);
           ctx.rect(x, y, 30, 60);
         }
-        ctx.fill();
         break;
       case 5:
         ctx.fillStyle = 'blue';
@@ -94,7 +117,6 @@ function App() {
           ctx.rect(x - 30, y - 30, 60, 30);
           ctx.rect(x, y, 30, 60);
         }
-        ctx.fill();
         break;
       case 6:
         ctx.fillStyle = 'indigo';
@@ -102,34 +124,78 @@ function App() {
           ctx.rect(x - 30, y, 90, 30);
           ctx.rect(x, y -30, 30, 30);
         }
-        ctx.fill();
         break;
       case 7:
         ctx.fillStyle = 'purple';
         if (rotate === 0) ctx.rect(x - 30, y, 120, 30);
         if (rotate === 1) ctx.rect(x, y - 60, 30, 120);
-        if (rotate === 2) ctx.rect(x - 60, y, 120, 30);
-        if (rotate === 3) ctx.rect(x, y - 30, 30, 120);
-        ctx.fill();
+        if (rotate === 2) ctx.rect(x - 30, y, 120, 30);
+        if (rotate === 3) ctx.rect(x, y - 60, 30, 120);
         break;
       default:
         break;
     }
+    ctx.fill();
     ctx.closePath();
   }
 
   const control = (key: string) => {
+    let check = true;
     switch (key) {
       case 'w': case 'ArrowUp':
-        setObj({...obj, rotate: (obj.rotate + 1) % 4});
+        switch (obj.type) {
+          case 1:
+            break;
+          case 2:
+            break;
+          case 3:
+            break;
+          case 4:
+            break;    
+          case 5:
+            break;
+          case 6:
+            break;
+          case 7:
+            break;
+        }
+        if (check) {
+          setObj({...obj, rotate: (obj.rotate + 1) % 4});
+        }
         break;
-      case 'a':
-      case 'ArrowLeft':
+      case 'a': case 'ArrowLeft':
         setObj({...obj, x: obj.x - 1});
+        // setBoard(board.map((el, i) => i !== 5 + 4 ? el : el.map((x, j) => j !== 5 ? x : 3)));
+        // 
         break;
-      case 's':
-      case 'ArrowDown':
-        setObj({...obj, y: obj.y + 1});
+      case 's': case 'ArrowDown':
+        switch (obj.type) {
+          case 1:
+            break;
+          case 2:
+            break;
+          case 3:
+            break;
+          case 4:
+            break;    
+          case 5:
+            break;
+          case 6:
+            break;
+          case 7:
+            if (obj.rotate === 0 || obj.rotate === 2) {
+              for (let i = 0; i < 4; i++) {
+                if (board[obj.x + i][obj.y - 8] !== 0) check = false;
+              } 
+            }
+            if (obj.rotate === 1 || obj.rotate === 3) {
+              if (board[obj.x][obj.y - 7] !== 0) check = false;
+            }
+            if (check) {
+              setObj({...obj, y: obj.y + 1});
+            }
+            break;
+        }
         break;
       case 'd':
       case 'ArrowRight':
@@ -138,6 +204,10 @@ function App() {
       default:
         break;
     }
+  }
+
+  const play = () => {
+
   }
 
   useEffect(() => {
@@ -151,8 +221,8 @@ function App() {
   return (
     <div className='background' onClick={() => keyRef.current?.focus()}>
       <canvas ref={cvRef} className='board' width={360} height={630} onClick={() => {
-        setShow(true);
         console.log(obj);
+        console.log(board);
         }}></canvas>
       <div ref={keyRef} className='control' onKeyDown={(e) => {
         console.log(e.key);
