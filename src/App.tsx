@@ -73,69 +73,53 @@ function App() {
     x *= 30;
     y *= 30;
     ctx.beginPath();
+    ctx.translate(x + 15, y + 15);
+    ctx.rotate((Math.PI * 90 * rotate) / 180);
     switch (type) {
       case 1:
-        ctx.rect(x, y, 60, 60);
+        ctx.resetTransform();
+        ctx.translate(x, y);
+        ctx.rotate((Math.PI * 90 * rotate) / 180);
+        ctx.rect(-30, -30, 60, 60);
         ctx.fillStyle = 'red';
         break;
       case 2:
         ctx.fillStyle = 'orange';
-        if (rotate === 0) {
-          ctx.rect(x, y - 30, 30, 60);
-          ctx.rect(x + 30, y, 30, 60);
-        }
-        if (rotate === 1) {
-          ctx.rect(x - 30, y, 60, 30);
-          ctx.rect(x, y - 30, 60, 30);
-        }
-        if (rotate === 2) {
-          ctx.rect(x - 30, y - 30, 30, 60);
-          ctx.rect(x, y, 30, 60);
-        }
-        if (rotate === 3) {
-          ctx.rect(x, y, 60, 30);
-          ctx.rect(x - 30, y + 30, 60, 30);
-        }
+        ctx.rect(-15, -45, 30, 60);
+        ctx.rect(15, -15, 30, 60);
         break;
       case 3:
         ctx.fillStyle = 'yellow';
-        if (rotate === 0) {
-          ctx.rect(x - 30, y, 30, 60);
-          ctx.rect(x, y - 30, 30, 60);
-        }
+        ctx.rect(-45, -15, 30, 60);
+        ctx.rect(-15, -45, 30, 60);
         break;
       case 4:
         ctx.fillStyle = 'green';
-        if (rotate === 0) {
-          ctx.rect(x, y - 30, 60, 30);
-          ctx.rect(x, y, 30, 60);
-        }
+        ctx.rect(-15, -45, 60, 30);
+        ctx.rect(-15, -15, 30, 60);
         break;
       case 5:
         ctx.fillStyle = 'blue';
-        if (rotate === 0) {
-          ctx.rect(x - 30, y - 30, 60, 30);
-          ctx.rect(x, y, 30, 60);
-        }
+        ctx.rect(- 45,- 45, 60, 30);
+        ctx.rect(-15, -15, 30, 60);
         break;
       case 6:
         ctx.fillStyle = 'indigo';
-        if (rotate === 0) {
-          ctx.rect(x - 30, y, 90, 30);
-          ctx.rect(x, y -30, 30, 30);
-        }
+        ctx.rect(-45, -15, 90, 30);
+        ctx.rect(-15, -45, 30, 30);
         break;
       case 7:
         ctx.fillStyle = 'purple';
-        if (rotate === 0) ctx.rect(x - 30, y, 120, 30);
-        if (rotate === 1) ctx.rect(x, y - 60, 30, 120);
-        if (rotate === 2) ctx.rect(x - 30, y, 120, 30);
-        if (rotate === 3) ctx.rect(x, y - 60, 30, 120);
+        ctx.resetTransform()
+        ctx.translate(x, y);
+        ctx.rotate((Math.PI * 270 * rotate) / 180);
+        ctx.rect(-60, 0, 120, 30);
         break;
       default:
         break;
     }
     ctx.fill();
+    ctx.resetTransform();
     ctx.closePath();
   }
 
