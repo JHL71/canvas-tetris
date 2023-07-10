@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 
 interface objI {
@@ -23,15 +23,14 @@ function App() {
   const [board, setBoard] = useState<any[][]> (Array.from({length: 25}, (_, i) => i !== 24 
   ? Array.from({length: 12}, (_, i) => (i === 0 || i === 11) ? 255 : 0)
   : Array(12).fill(255)));
-  let ms = 1000;
+  const falling = useRef(1000)
 
   const playGame = () => {
-    const ctx = cvRef.current?.getContext('2d');
     objRef.current.y++;
     setObj({...objRef.current});
   }
 
-  const drawBoard = () => {
+  const drawBoard = useCallback(() => {
     const ctx = cvRef.current?.getContext('2d');
     if (ctx) {
       ctx.clearRect(0, 0, 360, 630);
@@ -79,7 +78,7 @@ function App() {
         }
       }
     }
-  };
+  }, []);
 
   const drawFigure = (x: number, y: number, type: number, rotate: number) => {
     const ctx = cvRef.current?.getContext('2d');
@@ -207,7 +206,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (start) tRef.current = setInterval(() => {playGame()}, 1000);
+    if (start) tRef.current = setInterval(() => {playGame()}, falling.current);
     else clearInterval(tRef.current);
   }, [start])
 
