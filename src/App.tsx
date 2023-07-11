@@ -20,14 +20,71 @@ function App() {
   });
   const tRef:any = useRef();
   const objRef = useRef(obj);
-  const [board, setBoard] = useState<any[][]> (Array.from({length: 25}, (_, i) => i !== 24 
+  const [board, setBoard] = useState<any[][]> (Array.from({length: 26}, (_, i) => i !== 24 
   ? Array.from({length: 12}, (_, i) => (i === 0 || i === 11) ? 255 : 0)
   : Array(12).fill(255)));
-  const falling = useRef(1000)
+  const falling = useRef(1000);
 
   const playGame = () => {
-    objRef.current.y++;
-    setObj({...objRef.current});
+    // let x = objRef.current.x;
+    let {x, y, type, rotate} = {...objRef.current}
+    let check = true;
+    console.log(x, y, type, rotate);
+    switch (type) {
+      case 1:
+
+        break;
+      case 2:
+        if (rotate === 0) {
+
+        }
+        if (rotate === 1) {
+          
+        }
+        if (rotate === 2) {
+          
+        }
+        if (rotate === 3) {
+          
+        }
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+      case 5:
+        break;
+      case 6:
+        break;
+      case 7:
+        if (rotate === 0) {
+          for (let i = 0; i < 4; i++) {
+            if (board[y + 5][x + i - 2] !== 0) check = false;
+          }  
+        }
+        if (rotate === 1) {
+          if (board[y + 6][x] !== 0) check = false;
+        }
+        if (rotate === 2) {
+          for (let i = 0; i < 4; i++) {
+            if (board[y + 4][x + i - 2] !== 0) check = false;
+          }  
+        }
+        if (rotate === 3) {
+          if (board[y + 6][x - 1] !== 0) check = false;
+        }
+        break;
+      default:
+        break;
+      }
+      setBoard(board.map((el, i) => i !== y + 4 ? el : board[i].map((el, i) => i !== x - 2 ? el : 3)))
+    if (check) {
+      y++;
+      objRef.current.y = y;
+      setObj({...objRef.current});
+    } else {
+      setBoard(board.map((el, i) => i !== y + 4 ? el : board[i].map((el, i) => i !== x - 2 ? el : 3)))
+    }
   }
 
   const drawBoard = useCallback(() => {
@@ -78,7 +135,7 @@ function App() {
         }
       }
     }
-  }, []);
+  }, [board]);
 
   const drawFigure = (x: number, y: number, type: number, rotate: number) => {
     const ctx = cvRef.current?.getContext('2d');
@@ -156,6 +213,26 @@ function App() {
           case 6:
             break;
           case 7:
+            if (obj.rotate === 0) {
+              for (let i = 0; i < 4; i++) {
+                if (board[obj.y + 2 + i][obj.x] !== 0) check = false;
+              }
+            }
+            if (obj.rotate === 1) {
+              for (let i = 0; i < 4; i++) {
+                if (board[obj.y + 3][obj.x - 2 + i] !== 0) check = false;
+              }
+            }
+            if (obj.rotate === 2) {
+              for (let i = 0; i < 4; i++) {
+                if (board[obj.y + 2 + i][obj.x - 1] !== 0) check = false;
+              }
+            }
+            if (obj.rotate === 3) {
+              for (let i = 0; i < 4; i++) {
+                if (board[obj.y + 4][obj.x - 2 + i] !== 0) check = false;
+              }
+            }
             break;
         }
         if (check) {
@@ -180,13 +257,21 @@ function App() {
           case 6:
             break;
           case 7:
-            if (obj.rotate === 0 || obj.rotate === 2) {
+            if (obj.rotate === 0) {
               for (let i = 0; i < 4; i++) {
-                if (board[obj.x + i][obj.y - 8] !== 0 || board[obj.x + i][obj.y - 8] !== undefined) check = false;
-              } 
+                if (board[obj.y + 5][obj.x + i - 2] !== 0) check = false;
+              }  
             }
-            if (obj.rotate === 1 || obj.rotate === 3) {
-              if (board[obj.x][obj.y - 7] !== 0 || board[obj.x][obj.y - 7] !== undefined) check = false;
+            if (obj.rotate === 1) {
+              if (board[obj.y + 6][obj.x] !== 0) check = false;
+            }
+            if (obj.rotate === 2) {
+              for (let i = 0; i < 4; i++) {
+                if (board[obj.y + 4][obj.x + i - 2] !== 0) check = false;
+              }  
+            }
+            if (obj.rotate === 3) {
+              if (board[obj.y + 6][obj.x - 1] !== 0) check = false;
             }
             if (check) {
               temp = {...obj, y: obj.y + 1};
@@ -201,6 +286,7 @@ function App() {
       default:
         break;
     }
+    console.log(obj.x, obj.y);
     setObj({...temp})
     objRef.current = {...temp}
   }
@@ -214,7 +300,7 @@ function App() {
     keyRef.current?.focus();
     drawBoard();
     drawFigure(obj.x, obj.y, obj.type, obj.rotate);
-  }, [obj.y, obj.x, obj.rotate, obj.type, start, drawBoard]);
+  });
 
   return (
     <div className='background' onClick={() => keyRef.current?.focus()}>
