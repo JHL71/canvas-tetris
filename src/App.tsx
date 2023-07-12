@@ -23,6 +23,7 @@ function App() {
   const [board, setBoard] = useState<any[][]> (Array.from({length: 26}, (_, i) => i !== 24 
   ? Array.from({length: 12}, (_, i) => (i === 0 || i === 11) ? 255 : 0)
   : Array(12).fill(255)));
+  const boardRef = useRef(board);
   const falling = useRef(1000);
 
   const playGame = () => {
@@ -59,70 +60,102 @@ function App() {
       case 7:
         if (rotate === 0) {
           for (let i = 0; i < 4; i++) {
-            if (board[y + 5][x + i - 2] !== 0) check = false;
+            if (boardRef.current[y + 5][x + i - 2] !== 0) check = false;
           }  
         }
         if (rotate === 1) {
-          if (board[y + 6][x] !== 0) check = false;
+          if (boardRef.current[y + 6][x] !== 0) check = false;
         }
         if (rotate === 2) {
           for (let i = 0; i < 4; i++) {
-            if (board[y + 4][x + i - 2] !== 0) check = false;
+            if (boardRef.current[y + 4][x + i - 2] !== 0) check = false;
           }  
         }
         if (rotate === 3) {
-          if (board[y + 6][x - 1] !== 0) check = false;
+          if (boardRef.current[y + 6][x - 1] !== 0) check = false;
         }
         break;
       default:
         break;
       }
-      setBoard(board.map((el, i) => i !== y + 4 ? el : board[i].map((el, i) => i !== x - 2 ? el : 3)))
+      // setBoard(board.map((el, i) => i !== y + 4 ? el : board[i].map((el, i) => i !== x - 2 ? el : 3)));
     if (check) {
       y++;
       objRef.current.y = y;
       setObj({...objRef.current});
     } else {
-      setBoard(board.map((el, i) => i !== y + 4 ? el : board[i].map((el, i) => i !== x - 2 ? el : 3)))
+      switch (type) {
+        case 7:
+          if (rotate === 0) {
+            boardRef.current = boardRef.current.map((el, idx) => idx !== y + 4 ? el : boardRef.current[idx].map((el, idx) => (idx < x - 2 || idx > x + 1) ? el : type));
+            setBoard([...boardRef.current]);
+          }
+          if (rotate === 1) {
+            boardRef.current = boardRef.current.map((el, idx) => (idx < y + 2 || idx > y + 5) ? el : boardRef.current[idx].map((el, idx) => idx !== x ? el : type));
+            setBoard([...boardRef.current]);
+          }
+          if (rotate === 2) {
+            boardRef.current = boardRef.current.map((el, idx) => idx !== y + 3 ? el : boardRef.current[idx].map((el, idx) => (idx < x - 2 || idx > x + 1) ? el : type));
+            setBoard([...boardRef.current]);
+          }
+          if (rotate === 3) {
+            boardRef.current = boardRef.current.map((el, idx) => (idx < y + 2 || idx > y + 5) ? el : boardRef.current[idx].map((el, idx) => idx !== x - 1 ? el : type));
+            setBoard([...boardRef.current]);
+          }
+      }
+
+      setObj({x: 5, y: 0, type: 7, rotate: 0});
+      objRef.current = {x: 5, y: 0, type: 7, rotate: 0};
     }
+  }
+
+  const collapse = () => {
+    const full: number[] = [];
+    for (let y = 0; y < 26; y++) {
+      if (board[y].every((el) => el !== 0) && y !== 24) full.push(y);
+    }
+    
+
+    return full;
   }
 
   const drawBoard = useCallback(() => {
     const ctx = cvRef.current?.getContext('2d');
+    let x = collapse();
     if (ctx) {
       ctx.clearRect(0, 0, 360, 630);
       for (let i = 0; i < 21; i++) {
         for (let j = 0; j < 12; j++) {
           ctx.beginPath();
-          if (board[i+4][j] === 255) {
+          if (boardRef.current[i+4][j] === 255) {
             ctx.rect(j * 30 + 5, i * 30 + 5, 20, 20);
             ctx.fillStyle = 'black';
             ctx.fill();
-          } else if (board[i+4][j] === 1) {
+          } else if (boardRef.current[i+4][j] === 1) {
             ctx.rect(j * 30, i * 30, 30, 30);
             ctx.fillStyle = 'red';
             ctx.fill();
-          } else if (board[i+4][j] === 2) {
+          } else if (boardRef.current[i+4][j] === 2) {
             ctx.rect(j * 30, i * 30, 30, 30);
             ctx.fillStyle = 'orange';
             ctx.fill();
-          } else if (board[i+4][j] === 3) {
+          } else if (boardRef.current[i+4][j] === 3) {
             ctx.rect(j * 30, i * 30, 30, 30);
             ctx.fillStyle = 'yellow';
             ctx.fill();
-          } else if (board[i+4][j] === 4) {
+          } else if (boardRef.current[i+4][j] === 4) {
             ctx.rect(j * 30, i * 30, 30, 30);
             ctx.fillStyle = 'green';
             ctx.fill();
-          } else if (board[i+4][j] === 5) {
+          } else if (boardRef.current[i+4][j] === 5) {
             ctx.rect(j * 30, i * 30, 30, 30);
             ctx.fillStyle = 'blue';
             ctx.fill();
-          } else if (board[i+4][j] === 6) {
+          } else if (boardRef.current[i+4][j] === 6) {
             ctx.rect(j * 30, i * 30, 30, 30);
             ctx.fillStyle = 'indigo';
             ctx.fill();
-          } else if (board[i+4][j] === 7) {
+          } else if (boardRef.current[i+4][j] === 7) {
             ctx.rect(j * 30, i * 30, 30, 30);
             ctx.fillStyle = 'purple';
             ctx.fill();
@@ -135,7 +168,8 @@ function App() {
         }
       }
     }
-  }, [board]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [boardRef.current]);
 
   const drawFigure = (x: number, y: number, type: number, rotate: number) => {
     const ctx = cvRef.current?.getContext('2d');
@@ -294,6 +328,7 @@ function App() {
   useEffect(() => {
     if (start) tRef.current = setInterval(() => {playGame()}, falling.current);
     else clearInterval(tRef.current);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [start])
 
   useEffect(() => {
