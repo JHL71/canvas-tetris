@@ -110,18 +110,29 @@ function App() {
   }
 
   const collapse = () => {
-    const full: number[] = [];
+    const full: any[] = [];
     for (let y = 0; y < 26; y++) {
       if (board[y].every((el) => el !== 0) && y !== 24) full.push(y);
     }
-    
-
-    return full;
+    if (full.length) {
+      console.log('full');
+      let newBoard = [...board].map((el) => [...el]);
+      while (full.length) {
+        let line = full.pop();
+        newBoard[line] = Array.from({length: 12}, (_, i) => (i === 0 || i === 11) ? 255 : 0);
+        for (let y = line; y > 0; y--) {
+          for (let x = 1; x < 11; x++) {
+            [newBoard[y][x], newBoard[y-1][x]] = [newBoard[y-1][x], newBoard[y][x]]; 
+          }
+        }
+      }
+      boardRef.current = [...newBoard];
+      setBoard([...newBoard]);
+    }
   }
 
   const drawBoard = useCallback(() => {
     const ctx = cvRef.current?.getContext('2d');
-    let x = collapse();
     if (ctx) {
       ctx.clearRect(0, 0, 360, 630);
       for (let i = 0; i < 21; i++) {
@@ -333,6 +344,7 @@ function App() {
 
   useEffect(() => {
     keyRef.current?.focus();
+    collapse();
     drawBoard();
     drawFigure(obj.x, obj.y, obj.type, obj.rotate);
   });
