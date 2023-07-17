@@ -111,13 +111,12 @@ function App() {
 
   const collapse = () => {
     const full: any[] = [];
-    for (let y = 0; y < 26; y++) {
+    for (let y = 24; y >= 4; y--) {
       if (board[y].every((el) => el !== 0) && y !== 24) full.push(y);
     }
     if (full.length) {
-      console.log('full');
       let newBoard = [...board].map((el) => [...el]);
-      while (full.length) {
+      while (full.length > 0) {
         let line = full.pop();
         newBoard[line] = Array.from({length: 12}, (_, i) => (i === 0 || i === 11) ? 255 : 0);
         for (let y = line; y > 0; y--) {
@@ -285,7 +284,41 @@ function App() {
         }
         break;
       case 'a': case 'ArrowLeft':
-        temp = {...obj, x: obj.x - 1};
+        switch (obj.type) {
+          case 1:
+            break;
+          case 2:
+            break;
+          case 3:
+            break;
+          case 4:
+            break;    
+          case 5:
+            break;
+          case 6:
+            break;
+          case 7:
+            if (obj.rotate === 0) {
+              if (board[obj.y + 4][obj.x - 3] !== 0) check = false;
+            }
+            if (obj.rotate === 1) {
+              for (let i = 0; i < 4; i++) {
+                if (board[obj.y + 2 + i][obj.x - 1] !== 0) check = false;
+              }
+            }
+            if (obj.rotate === 2) {
+              if (board[obj.y + 3][obj.x - 3] !== 0) check = false;
+            }
+            if (obj.rotate === 3) {
+              for (let i = 0; i < 4; i++) {
+                if (board[obj.y + 2 + i][obj.x - 2] !== 0) check = false;
+              }
+            }
+            if (check) {
+              temp = {...obj, x: obj.x - 1};
+            }
+            break;
+        }
         break;
       case 's': case 'ArrowDown':
         switch (obj.type) {
@@ -326,7 +359,41 @@ function App() {
         break;
       case 'd':
       case 'ArrowRight':
-        temp = {...obj, x: obj.x + 1};
+        switch (obj.type) {
+          case 1:
+            break;
+          case 2:
+            break;
+          case 3:
+            break;
+          case 4:
+            break;    
+          case 5:
+            break;
+          case 6:
+            break;
+          case 7:
+            if (obj.rotate === 0) {
+              if (board[obj.y + 4][obj.x + 2] !== 0) check = false;
+            }
+            if (obj.rotate === 1) {
+              for (let i = 0; i < 4; i++) {
+                if (board[obj.y + 2 + i][obj.x + 1] !== 0) check = false;
+              }
+            }
+            if (obj.rotate === 2) {
+              if (board[obj.y + 3][obj.x + 2] !== 0) check = false;
+            }
+            if (obj.rotate === 3) {
+              for (let i = 0; i < 4; i++) {
+                if (board[obj.y + 2 + i][obj.x] !== 0) check = false;
+              }
+            }
+            if (check) {
+              temp = {...obj, x: obj.x + 1};
+            }
+            break;
+        }
         break;
       default:
         break;
