@@ -15,7 +15,7 @@ function App() {
   const [obj, setObj] = useState<objI>({
     x: 4,
     y: 0,
-    type: 7,
+    type: 1,
     rotate: 0
   });
   const tRef:any = useRef();
@@ -33,7 +33,9 @@ function App() {
     console.log(x, y, type, rotate);
     switch (type) {
       case 1:
-
+        for (let i = 0; i < 2; i += 1) {
+          if (boardRef.current[y + 5][x - 1 + i] !== 0) check = false;
+        }
         break;
       case 2:
         if (rotate === 0) {
@@ -85,6 +87,10 @@ function App() {
       setObj({...objRef.current});
     } else {
       switch (type) {
+        case 1:
+          boardRef.current = boardRef.current.map((el, idx) => (idx !== y + 4 && idx !== y + 3) ? el : boardRef.current[idx].map((el, idx) => (idx !== x && idx !== x - 1) ? el : type));
+          setBoard([...boardRef.current]);
+          break;
         case 7:
           if (rotate === 0) {
             boardRef.current = boardRef.current.map((el, idx) => idx !== y + 4 ? el : boardRef.current[idx].map((el, idx) => (idx < x - 2 || idx > x + 1) ? el : type));
@@ -286,6 +292,9 @@ function App() {
       case 'a': case 'ArrowLeft':
         switch (obj.type) {
           case 1:
+            for (let i = 0; i < 2; i += 1) {
+              if (board[obj.y + 3 + i][obj.x - 2] !== 0) check = false;
+            }
             break;
           case 2:
             break;
@@ -314,15 +323,18 @@ function App() {
                 if (board[obj.y + 2 + i][obj.x - 2] !== 0) check = false;
               }
             }
-            if (check) {
-              temp = {...obj, x: obj.x - 1};
-            }
             break;
+        }
+        if (check) {
+          temp = {...obj, x: obj.x - 1};
         }
         break;
       case 's': case 'ArrowDown':
         switch (obj.type) {
           case 1:
+            for (let i = 0; i < 2; i += 1) {
+              if (board[obj.y + 5][obj.x - i] !== 0) check = false;
+            }
             break;
           case 2:
             break;
@@ -351,16 +363,19 @@ function App() {
             if (obj.rotate === 3) {
               if (board[obj.y + 6][obj.x - 1] !== 0) check = false;
             }
-            if (check) {
-              temp = {...obj, y: obj.y + 1};
-            }
-            break;
+            break;  
+        }
+        if (check) {
+          temp = {...obj, y: obj.y + 1};
         }
         break;
       case 'd':
       case 'ArrowRight':
         switch (obj.type) {
           case 1:
+            for (let i = 0; i < 2; i += 1) {
+              if (board[obj.y + 3 + i][obj.x + 1] !== 0) check = false;
+            }
             break;
           case 2:
             break;
@@ -389,10 +404,10 @@ function App() {
                 if (board[obj.y + 2 + i][obj.x] !== 0) check = false;
               }
             }
-            if (check) {
-              temp = {...obj, x: obj.x + 1};
-            }
             break;
+        }
+        if (check) {
+          temp = {...obj, x: obj.x + 1};
         }
         break;
       default:
