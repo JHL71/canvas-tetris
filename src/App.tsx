@@ -13,9 +13,9 @@ function App() {
   const keyRef = useRef<HTMLDivElement|null>(null);
   const [start, setStart] = useState<boolean>(false);
   const [obj, setObj] = useState<objI>({
-    x: 4,
+    x: 5,
     y: 0,
-    type: 1,
+    type: 2,
     rotate: 0
   });
   const tRef:any = useRef();
@@ -30,7 +30,6 @@ function App() {
     // let x = objRef.current.x;
     let {x, y, type, rotate} = {...objRef.current}
     let check = true;
-    console.log(x, y, type, rotate);
     switch (type) {
       case 1:
         for (let i = 0; i < 2; i += 1) {
@@ -39,16 +38,16 @@ function App() {
         break;
       case 2:
         if (rotate === 0) {
-
+          if (boardRef.current[y + 5][x] !== 0 || boardRef.current[y + 6][x + 1] !== 0) check = false;
         }
         if (rotate === 1) {
-          
+          if (boardRef.current[y + 6][x - 1] !== 0 || boardRef.current[y + 6][x] !== 0 || boardRef.current[y + 5][x + 1] !== 0) check = false;
         }
         if (rotate === 2) {
-          
+          if (boardRef.current[y + 6][x] !== 0 || boardRef.current[y + 5][x - 1] !== 0) check = false;
         }
         if (rotate === 3) {
-          
+          if (boardRef.current[y + 5][x - 1] !== 0 || boardRef.current[y + 5][x] !== 0 || boardRef.current[y + 4][x + 1] !== 0) check = false;
         }
         break;
       case 3:
@@ -89,29 +88,99 @@ function App() {
       switch (type) {
         case 1:
           boardRef.current = boardRef.current.map((el, idx) => (idx !== y + 4 && idx !== y + 3) ? el : boardRef.current[idx].map((el, idx) => (idx !== x && idx !== x - 1) ? el : type));
-          setBoard([...boardRef.current]);
+          break;
+        case 2:
+          if (rotate === 0) {
+            boardRef.current = boardRef.current.map((el, idx) => (idx !== y + 3 && idx !== y + 4) ? el : boardRef.current[idx].map((el, idx) => idx !== x ? el : type));
+            boardRef.current = boardRef.current.map((el, idx) => (idx !== y + 4 && idx !== y + 5) ? el : boardRef.current[idx].map((el, idx) => idx !== x + 1 ? el : type));
+          }
+          if (rotate === 1) {
+            boardRef.current = boardRef.current.map((el, idx) => (idx !== y + 4) ? el : boardRef.current[idx].map((el, idx) => (idx !== x && idx !== x + 1) ? el : type));
+            boardRef.current = boardRef.current.map((el, idx) => (idx !== y + 5) ? el : boardRef.current[idx].map((el, idx) => (idx !== x && idx !== x - 1) ? el : type));
+          }
+          if (rotate === 2) {
+            boardRef.current = boardRef.current.map((el, idx) => (idx !== y + 3 && idx !== y + 4) ? el : boardRef.current[idx].map((el, idx) => idx !== x - 1 ? el : type));
+            boardRef.current = boardRef.current.map((el, idx) => (idx !== y + 4 && idx !== y + 5) ? el : boardRef.current[idx].map((el, idx) => idx !== x ? el : type));
+          }
+          if (rotate === 3) {
+            boardRef.current = boardRef.current.map((el, idx) => (idx !== y + 4) ? el : boardRef.current[idx].map((el, idx) => (idx !== x && idx !== x - 1) ? el : type));
+            boardRef.current = boardRef.current.map((el, idx) => (idx !== y + 3) ? el : boardRef.current[idx].map((el, idx) => (idx !== x && idx !== x + 1) ? el : type));
+          }
+          break;
+        case 3:
+          if (rotate === 0) {
+
+          }
+          if (rotate === 1) {
+
+          }
+          if (rotate === 2) {
+
+          }
+          if (rotate === 3) {
+
+          }
+          break;
+        case 4:
+          if (rotate === 0) {
+
+          }
+          if (rotate === 1) {
+
+          }
+          if (rotate === 2) {
+
+          }
+          if (rotate === 3) {
+            
+          }
+          break;
+        case 5:
+          if (rotate === 0) {
+
+          }
+          if (rotate === 1) {
+
+          }
+          if (rotate === 2) {
+
+          }
+          if (rotate === 3) {
+            
+          }
+          break;
+        case 6:
+          if (rotate === 0) {
+
+          }
+          if (rotate === 1) {
+
+          }
+          if (rotate === 2) {
+
+          }
+          if (rotate === 3) {
+            
+          }
           break;
         case 7:
           if (rotate === 0) {
             boardRef.current = boardRef.current.map((el, idx) => idx !== y + 4 ? el : boardRef.current[idx].map((el, idx) => (idx < x - 2 || idx > x + 1) ? el : type));
-            setBoard([...boardRef.current]);
           }
           if (rotate === 1) {
             boardRef.current = boardRef.current.map((el, idx) => (idx < y + 2 || idx > y + 5) ? el : boardRef.current[idx].map((el, idx) => idx !== x ? el : type));
-            setBoard([...boardRef.current]);
           }
           if (rotate === 2) {
             boardRef.current = boardRef.current.map((el, idx) => idx !== y + 3 ? el : boardRef.current[idx].map((el, idx) => (idx < x - 2 || idx > x + 1) ? el : type));
-            setBoard([...boardRef.current]);
           }
           if (rotate === 3) {
             boardRef.current = boardRef.current.map((el, idx) => (idx < y + 2 || idx > y + 5) ? el : boardRef.current[idx].map((el, idx) => idx !== x - 1 ? el : type));
-            setBoard([...boardRef.current]);
           }
       }
-
-      setObj({x: 5, y: 0, type: 7, rotate: 0});
-      objRef.current = {x: 5, y: 0, type: 7, rotate: 0};
+      let nxtType = Math.ceil(Math.random() * 7);
+      setBoard([...boardRef.current]);
+      setObj({x: 5, y: 0, type: nxtType, rotate: 0});
+      objRef.current = {x: 5, y: 0, type: nxtType, rotate: 0};
     }
   }
 
@@ -251,16 +320,92 @@ function App() {
       case 'w': case 'ArrowUp':
         switch (obj.type) {
           case 1:
+            if (obj.rotate === 3) {
+              if (board[obj.y + 4][obj.x] !== 0 || board[obj.y + 3][obj.x] !== 0) check = false;
+              if (board[obj.y + 4][obj.x + 1] !== 0 || board[obj.y + 5][obj.x + 1] !== 0) check = false;
+            }
+            if (obj.rotate === 0) {
+              if (board[obj.y + 4][obj.x] !== 0 || board[obj.y + 5][obj.x - 1] !== 0) check = false;
+              if (board[obj.y + 4][obj.x + 1] !== 0 || board[obj.y + 5][obj.x] !== 0) check = false;
+            }
+            if (obj.rotate === 1) {
+              if (board[obj.y + 4][obj.x - 1] !== 0 || board[obj.y + 3][obj.x - 1] !== 0) check = false;
+              if (board[obj.y + 4][obj.x] !== 0 || board[obj.y + 5][obj.x] !== 0) check = false;
+            }
+            if (obj.rotate === 2) {
+              if (board[obj.y + 4][obj.x] !== 0 || board[obj.y + 3][obj.x + 1] !== 0) check = false;
+              if (board[obj.y + 4][obj.x - 1] !== 0 || board[obj.y + 3][obj.x] !== 0) check = false;
+            }
             break;
           case 2:
+            if (obj.rotate === 3) {
+
+            }
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
             break;
           case 3:
+            if (obj.rotate === 3) {
+
+            }
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
             break;
           case 4:
+            if (obj.rotate === 3) {
+
+            }
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
             break;    
           case 5:
+            if (obj.rotate === 3) {
+
+            }
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
             break;
           case 6:
+            if (obj.rotate === 3) {
+
+            }
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
             break;
           case 7:
             if (obj.rotate === 0) {
@@ -297,14 +442,76 @@ function App() {
             }
             break;
           case 2:
+            if (obj.rotate === 0) {
+              if (board[obj.y + 4][obj.x - 1] !== 0 || board[obj.y + 3][obj.x - 1] !== 0) check = false;
+              if (board[obj.y + 5][obj.x] !== 0) check = false;
+            }
+            if (obj.rotate === 1) {
+              if (board[obj.y + 4][obj.x - 1] !== 0 || board[obj.y + 5][obj.x - 2] !== 0) check = false;
+            }
+            if (obj.rotate === 2) {
+              if (board[obj.y + 4][obj.x - 2] !== 0 || board[obj.y + 3][obj.x - 2] !== 0) check = false;
+              if (board[obj.y + 5][obj.x - 1] !== 0) check = false;
+            }
+            if (obj.rotate === 3) {
+              if (board[obj.y + 3][obj.x - 1] !== 0 || board[obj.y + 4][obj.x - 2] !== 0) check = false;
+            }
             break;
           case 3:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;
           case 4:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;    
           case 5:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;
           case 6:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;
           case 7:
             if (obj.rotate === 0) {
@@ -337,14 +544,74 @@ function App() {
             }
             break;
           case 2:
+            if (obj.rotate === 0) {
+              if (boardRef.current[obj.y + 5][obj.x] !== 0 || boardRef.current[obj.y + 6][obj.x + 1] !== 0) check = false;
+            }
+            if (obj.rotate === 1) {
+              if (boardRef.current[obj.y + 6][obj.x - 1] !== 0 || boardRef.current[obj.y + 6][obj.x] !== 0 || boardRef.current[obj.y + 5][obj.x + 1] !== 0) check = false;
+            }
+            if (obj.rotate === 2) {
+              if (boardRef.current[obj.y + 6][obj.x] !== 0 || boardRef.current[obj.y + 5][obj.x - 1] !== 0) check = false;
+            }
+            if (obj.rotate === 3) {
+              if (boardRef.current[obj.y + 5][obj.x - 1] !== 0 || boardRef.current[obj.y + 5][obj.x] !== 0 || boardRef.current[obj.y + 4][obj.x + 1] !== 0) check = false;
+            }
             break;
           case 3:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;
           case 4:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;    
           case 5:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;
           case 6:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;
           case 7:
             if (obj.rotate === 0) {
@@ -378,14 +645,90 @@ function App() {
             }
             break;
           case 2:
+            // if (obj.rotate === 0) {
+            //   if (board[obj.y + 4][obj.x - 1] !== 0 || board[obj.y + 3][obj.x - 1] !== 0) check = false;
+            //   if (board[obj.y + 5][obj.x] !== 0) check = false;
+            // }
+            // if (obj.rotate === 1) {
+            //   if (board[obj.y + 4][obj.x - 1] !== 0 || board[obj.y + 5][obj.x - 2] !== 0) check = false;
+            // }
+            // if (obj.rotate === 2) {
+            //   if (board[obj.y + 4][obj.x - 2] !== 0 || board[obj.y + 3][obj.x - 2] !== 0) check = false;
+            //   if (board[obj.y + 5][obj.x - 1] !== 0) check = false;
+            // }
+            // if (obj.rotate === 3) {
+            //   if (board[obj.y + 3][obj.x - 1] !== 0 || board[obj.y + 4][obj.x - 2] !== 0) check = false;
+            // }
+            if (obj.rotate === 0) {
+              if (board[obj.y + 4][obj.x + 2] !== 0 || board[obj.y + 5][obj.x + 2] !== 0) check = false;
+              if (board[obj.y + 3][obj.x + 1] !== 0) check = false;
+            }
+            if (obj.rotate === 1) {
+              if (board[obj.y + 4][obj.x + 2] !== 0 || board[obj.y + 5][obj.x + 1] !== 0) check = false;
+            }
+            if (obj.rotate === 2) {
+              if (board[obj.y + 4][obj.x + 1] !== 0 || board[obj.y + 5][obj.x + 1] !== 0) check = false;
+              if (board[obj.y + 3][obj.x] !== 0) check = false;
+            }
+            if (obj.rotate === 3) {
+              if (board[obj.y + 3][obj.x + 2] !== 0 || board[obj.y + 4][obj.x + 1] !== 0) check = false;
+            }
             break;
           case 3:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;
           case 4:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;    
           case 5:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;
           case 6:
+            if (obj.rotate === 0) {
+
+            }
+            if (obj.rotate === 1) {
+
+            }
+            if (obj.rotate === 2) {
+
+            }
+            if (obj.rotate === 3) {
+              
+            }
             break;
           case 7:
             if (obj.rotate === 0) {
