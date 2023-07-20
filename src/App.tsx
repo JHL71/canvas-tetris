@@ -11,11 +11,12 @@ interface objI {
 function App() {
   const cvRef = useRef<HTMLCanvasElement|null>(null);
   const keyRef = useRef<HTMLDivElement|null>(null);
+  const [score, setScore] = useState<number>(0)
   const [start, setStart] = useState<boolean>(false);
   const [obj, setObj] = useState<objI>({
     x: 5,
     y: 0,
-    type: 3,
+    type: 7,
     rotate: 0
   });
   const tRef:any = useRef();
@@ -25,6 +26,7 @@ function App() {
   : Array(12).fill(255)));
   const boardRef = useRef(board);
   const falling = useRef(1000);
+  
 
   const playGame = () => {
     // let x = objRef.current.x;
@@ -193,7 +195,7 @@ function App() {
             boardRef.current = boardRef.current.map((el, idx) => (idx < y + 2 || idx > y + 5) ? el : boardRef.current[idx].map((el, idx) => idx !== x - 1 ? el : type));
           }
       }
-      let nxtType = Math.ceil(Math.random() * 7);
+      let nxtType = 7 //Math.ceil(Math.random() * 7);
       setBoard([...boardRef.current]);
       setObj({x: 5, y: 0, type: nxtType, rotate: 0});
       objRef.current = {x: 5, y: 0, type: nxtType, rotate: 0};
@@ -205,6 +207,8 @@ function App() {
     for (let y = 24; y >= 4; y--) {
       if (board[y].every((el) => el !== 0) && y !== 24) full.push(y);
     }
+    let temp = score;
+    setScore(temp + 10 * full.length);
     if (full.length) {
       let newBoard = [...board].map((el) => [...el]);
       while (full.length > 0) {
@@ -645,6 +649,8 @@ function App() {
             break;  
         }
         if (check) {
+          let x = score;
+          setScore(x += 1);
           temp = {...obj, y: obj.y + 1};
         }
         break;
@@ -774,13 +780,33 @@ function App() {
 
   return (
     <div className='background' onClick={() => keyRef.current?.focus()}>
-      <canvas ref={cvRef} className='board' width={360} height={630} onClick={() => {
-        drawBoard();
-        setStart(!start);
-        }}></canvas>
-      <div ref={keyRef} className='control' onKeyDown={(e) => {
-        control(e.key);
-        }} tabIndex={0}></div>
+      <div className='wrap'>
+        <canvas ref={cvRef} className='board' width={360} height={630}></canvas>
+        <div className='ctrl_board'>
+          <div className='title'>TETRIS</div>
+          <div className='score'>{score}</div>
+          <div className='button_wrap'>
+            <button className='button' onClick={() => setStart(true)}>start</button>
+            <button className='button' onClick={() => setStart(false)}>pause</button>
+            <button className='button' onClick={() => {
+              setScore(0);
+              setBoard(Array.from({length: 26}, (_, i) => i !== 24 
+              ? Array.from({length: 12}, (_, i) => (i === 0 || i === 11) ? 255 : 0)
+              : Array(12).fill(255)))
+              boardRef.current = Array.from({length: 26}, (_, i) => i !== 24 
+              ? Array.from({length: 12}, (_, i) => (i === 0 || i === 11) ? 255 : 0)
+              : Array(12).fill(255));
+              clearInterval(tRef.current);
+              setStart(false);
+              setObj({x: 5, y: 0, type: 7, rotate: 0});
+              objRef.current = {x: 5, y: 0, type: 7, rotate: 0};
+            }}>reset</button>
+          </div>
+        </div>
+        <div ref={keyRef} className='control' onKeyDown={(e) => {
+          control(e.key);
+          }} tabIndex={0}></div>
+      </div>
     </div>
   );
 }
