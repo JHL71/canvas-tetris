@@ -16,7 +16,7 @@ function App() {
   const [obj, setObj] = useState<objI>({
     x: 5,
     y: 0,
-    type: 3,//Math.ceil(Math.random() * 7),
+    type: 1,//Math.ceil(Math.random() * 7),
     rotate: 0
   });
   const tRef:any = useRef();
@@ -393,6 +393,16 @@ function App() {
       case ' ':
         switch (obj.type) {
           case 1:
+            while (board[obj.y + 4 + dy][obj.x - 1] === 0 && board[obj.y + 4 + dy][obj.x] === 0) {
+              dy += 1;
+            }
+            dy -= 1;
+            let ts = score;
+            setScore(ts + dy * 2);
+            boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + dy + 4 && idx !== obj.y + dy + 3) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x && idx !== obj.x - 1) ? el : obj.type));
+            setBoard([...boardRef.current]);
+            let nxtType = [...list.slice(0, list.indexOf(obj.type)), ...list.slice(list.indexOf(obj.type) + 1)][Math.ceil(Math.random() * 100) % 6];
+            temp = {x: 5, y: 0, type: nxtType, rotate: 0};
             break;
           case 2:
             if (obj.rotate === 0) {
@@ -647,26 +657,95 @@ function App() {
               }
             }
             break;
-          case 4:
+          case 4: //hear
             if (obj.rotate === 3) {
-              if (board[obj.y + 3][obj.x] !== 0) check = false;
-              if (board[obj.y + 3][obj.x + 1] !== 0) check = false;
-              if (board[obj.y + 5][obj.x]) check = false;
+              if (board[obj.y + 3][obj.x + 1] !== 0) {
+                if (board[obj.y + 3][obj.x] === 0 && board[obj.y + 3][obj.x - 1] === 0 && board[obj.y + 4][obj.x - 1] === 0 && board[obj.y + 5][obj.x - 1] === 0) {
+                  dx = -1;
+                }
+                else check = false;
+              }
+              if (board[obj.y + 3][obj.x] !== 0) {
+                if (board[obj.y + 3][obj.x - 1] === 0 && board[obj.y + 3][obj.x - 2] === 0 && board[obj.y + 4][obj.x - 2] === 0 && board[obj.y + 5][obj.x - 2] === 0) {
+                  dx = -2;
+                  check = true;
+                }
+                check = false;
+              }
+              if (board[obj.y + 5][obj.x]) {
+                if (board[obj.y + 2][obj.x] === 0 && board[obj.y + 2][obj.x + 1] === 0 && board[obj.y + 3][obj.x] === 0 && board[obj.y + 4][obj.x] === 0) {
+                  dy = -1
+                  check = true;
+                }
+                else check = false;
+              } 
             }
             if (obj.rotate === 0) {
-              if (board[obj.y + 4][obj.x - 1] !== 0) check = false;
-              if (board[obj.y + 4][obj.x + 1] !== 0) check = false;
-              if (board[obj.y + 5][obj.x + 1] !== 0) check = false;
+              if (board[obj.y + 4][obj.x - 1] !== 0) {
+                if (board[obj.y + 4][obj.x] === 0 && board[obj.y + 4][obj.x + 1] === 0 && board[obj.y + 4][obj.x + 2] === 0 && board[obj.y + 5][obj.x + 2] === 0) {
+                  dx = 1;
+                }
+                else check = false;
+              }
+              if (board[obj.y + 4][obj.x + 1] !== 0){
+                if (board[obj.y + 2][obj.x - 1] === 0 && board[obj.y + 2][obj.x] === 0 && board[obj.y + 2][obj.x + 1] === 0 && board[obj.y + 3][obj.x + 1] === 0) {
+                  dy = -2;
+                }
+                else check = false;
+              }
+              if (board[obj.y + 5][obj.x + 1] !== 0) {
+                if (board[obj.y + 3][obj.x - 1] === 0 && board[obj.y + 3][obj.x] === 0 && board[obj.y + 3][obj.x + 1] === 0 && board[obj.y + 4][obj.x + 1] === 0) {
+                  dy = -1;
+                  check = true;
+                }
+                else check = false;
+              }
             }
             if (obj.rotate === 1) {
-              if (board[obj.y + 3][obj.x] !== 0) check = false;
-              if (board[obj.y + 5][obj.x] !== 0) check = false;
-              if (board[obj.y + 5][obj.x - 1] !== 0) check = false;
+              if (board[obj.y + 3][obj.x] !== 0) {
+                if (board[obj.y + 3][obj.x + 1] === 0 && board[obj.y + 4][obj.x + 1] === 0 && board[obj.y + 5][obj.x + 1] === 0 && board[obj.y + 5][obj.x] === 0) {
+                  dx = 1;
+                } else if (board[obj.y + 4][obj.x] === 0 && board[obj.y + 5][obj.x] === 0 && board[obj.y + 6][obj.x] === 0 && board[obj.y + 6][obj.x - 1] === 0) {
+                  dy = 1;
+                }
+                else check = false;
+              }
+              if (board[obj.y + 5][obj.x] !== 0) {
+                if (board[obj.y + 2][obj.x] === 0 && board[obj.y + 3][obj.x] === 0 && board[obj.y + 4][obj.x] === 0 && board[obj.y + 4][obj.x - 1] === 0) {
+                  dy = -1
+                  check = true;
+                }
+                else check = false;
+              }
+              if (board[obj.y + 5][obj.x - 1] !== 0) {
+                if (board[obj.y + 3][obj.x + 1] === 0 && board[obj.y + 4][obj.x + 1] === 0 && board[obj.y + 5][obj.x + 1] === 0 && board[obj.y + 5][obj.x] === 0) {
+                  dx = 1;
+                  check = true;
+                }
+                else check = false;
+              }
             }
             if (obj.rotate === 2) {
-              if (board[obj.y + 3][obj.x - 1] !== 0) check = false;
-              if (board[obj.y + 4][obj.x - 1] !== 0) check = false;
-              if (board[obj.y + 4][obj.x + 1] !== 0) check = false;
+              if (board[obj.y + 4][obj.x + 1] !== 0) {
+                if (board[obj.y + 3][obj.x - 2] === 0 && board[obj.y + 4][obj.x - 2] === 0 && board[obj.y + 4][obj.x - 1] === 0 && board[obj.y + 4][obj.x] === 0) {
+                  dx = -1;
+                }
+                else check = false;
+              }
+              if (board[obj.y + 3][obj.x - 1] !== 0) {
+                if (board[obj.y + 3][obj.x] === 0 && board[obj.y + 4][obj.x] === 0 && board[obj.y + 4][obj.x + 1] === 0 && board[obj.y + 4][obj.x + 2] === 0) {
+                  dx = 1;
+                  check = true;
+                }
+                else check = false;
+              }
+              if (board[obj.y + 4][obj.x - 1] !== 0) {
+                if (board[obj.y + 3][obj.x] === 0 && board[obj.y + 4][obj.x] === 0 && board[obj.y + 4][obj.x + 1] === 0 && board[obj.y + 4][obj.x + 2] === 0) {
+                  dx = 1;
+                  check = true;
+                }
+                else check = false;
+              }
             }
             break;    
           case 5:
