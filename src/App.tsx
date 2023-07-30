@@ -16,7 +16,7 @@ function App() {
   const [obj, setObj] = useState<objI>({
     x: 5,
     y: 0,
-    type: 4,//Math.ceil(Math.random() * 7),
+    type: Math.ceil(Math.random() * 7),
     rotate: 0
   });
   const tRef:any = useRef();
@@ -461,58 +461,118 @@ function App() {
             break;
           case 4:
             if (obj.rotate === 0) {
-
+              while(board[obj.y + 6 + dy][obj.x] === 0 && board[obj.y + 4 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 3 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x && idx !== obj.x + 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy && idx !== obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x ? el : obj.type));
             }
             if (obj.rotate === 1) {
-
+              while(board[obj.y + 5 + dy][obj.x - 1] === 0 && board[obj.y + 5 + dy][obj.x] === 0 && board[obj.y + 6 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x - 1 && idx !== obj.x && idx !== obj.x + 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x + 1 ? el : obj.type));
             }
             if (obj.rotate === 2) {
-
+              while(board[obj.y + 6 + dy][obj.x - 1] === 0 && board[obj.y + 6 + dy][obj.x] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x && idx !== obj.x - 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy && idx !== obj.y + 3 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x ? el : obj.type));
             }
             if (obj.rotate === 3) {
-              
+              while(board[obj.y + 5 + dy][obj.x - 1] === 0 && board[obj.y + 5 + dy][obj.x] === 0 && board[obj.y + 5 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x - 1 && idx !== obj.x && idx !== obj.x + 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 3 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x - 1 ? el : obj.type));            
             }
             break;
           case 5:
             if (obj.rotate === 0) {
-
+              while (board[obj.y + 6 + dy][obj.x] === 0 && board[obj.y + 4 + dy][obj.x - 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 3 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x && idx !== obj.x - 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy && idx !== obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x ? el : obj.type));
             }
             if (obj.rotate === 1) {
-
+              while (board[obj.y + 5 + dy][obj.x - 1] === 0 && board[obj.y + 5 + dy][obj.x] === 0 && board[obj.y + 5 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x - 1 && idx !== obj.x && idx !== obj.x + 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 3 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x + 1 ? el : obj.type));
             }
             if (obj.rotate === 2) {
-
+              while (board[obj.y + 6 + dy][obj.x] === 0 && board[obj.y + 6 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x && idx !== obj.x + 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy && idx !== obj.y + 3 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x ? el : obj.type));
             }
             if (obj.rotate === 3) {
-              
+              while (board[obj.y + 6 + dy][obj.x - 1] === 0 && board[obj.y + 5 + dy][obj.x] === 0 && board[obj.y + 5 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x - 1 && idx !== obj.x && idx !== obj.x + 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x - 1 ? el : obj.type));
             }
             break;
           case 6:
             if (obj.rotate === 0) {
-
+              while(board[obj.y + 5 + dy][obj.x - 1] === 0 && board[obj.y + 5 + dy][obj.x] === 0 && board[obj.y + 5 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 3 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x && idx !== obj.x - 1 && idx !== obj.x + 1)? el : obj.type));
             }
             if (obj.rotate === 1) {
-
+              while(board[obj.y + 6 + dy][obj.x] === 0 && board[obj.y + 5 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x && idx !== obj.x + 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 3 + dy && idx !== obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x ? el : obj.type));
             }
             if (obj.rotate === 2) {
-
+              while(board[obj.y + 5 + dy][obj.x - 1] === 0 && board[obj.y + 6 + dy][obj.x] === 0 && board[obj.y + 5 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x && idx !== obj.x + 1 && idx !== obj.x - 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x ? el : obj.type));
             }
             if (obj.rotate === 3) {
-              
+              while(board[obj.y + 5 + dy][obj.x - 1] === 0 && board[obj.y + 6 + dy][obj.x] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 4 + dy) ? el : boardRef.current[idx].map((el, idx) => (idx !== obj.x && idx !== obj.x - 1) ? el : obj.type));
+              boardRef.current = boardRef.current.map((el, idx) => (idx !== obj.y + 3 + dy && idx !== obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x ? el : obj.type));
             }
             break;
           case 7:
             if (obj.rotate === 0) {
-
+              while (board[obj.y + 6 + dy][obj.x] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx < obj.y + 2 + dy || idx > obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x ? el : obj.type));
             }
             if (obj.rotate === 1) {
-
+              while (board[obj.y + 5 + dy][obj.x - 2] === 0 && board[obj.y + 5 + dy][obj.x - 1] === 0 && board[obj.y + 5 + dy][obj.x] === 0 && board[obj.y + 5 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => idx !== obj.y + 4 + dy ? el : boardRef.current[idx].map((el, idx) => (idx < obj.x - 2 || idx > obj.x + 1) ? el : obj.type));
             }
             if (obj.rotate === 2) {
-
+              while (board[obj.y + 6 + dy][obj.x - 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => (idx < obj.y + 2 + dy || idx > obj.y + 5 + dy) ? el : boardRef.current[idx].map((el, idx) => idx !== obj.x - 1 ? el : obj.type));
             }
             if (obj.rotate === 3) {
-              
+              while (board[obj.y + 4 + dy][obj.x - 2] === 0 && board[obj.y + 4 + dy][obj.x - 1] === 0 && board[obj.y + 4 + dy][obj.x] === 0 && board[obj.y +4 + dy][obj.x + 1] === 0) {
+                dy += 1;
+              }
+              boardRef.current = boardRef.current.map((el, idx) => idx !== obj.y + 3 + dy ? el : boardRef.current[idx].map((el, idx) => (idx < obj.x - 2 || idx > obj.x + 1) ? el : obj.type));
             }
             break;
         }
@@ -1163,7 +1223,7 @@ function App() {
             break;
           case 6:
             if (obj.rotate === 0) {
-              if (board[obj.y + 5][obj.x - 1] !== 0 || board[obj.y + 5][obj.x] || board[obj.y + 5][obj.x + 1] !== 0) check = false;
+              if (board[obj.y + 5][obj.x - 1] !== 0 || board[obj.y + 5][obj.x] !== 0 || board[obj.y + 5][obj.x + 1] !== 0) check = false;
             }
             if (obj.rotate === 1) {
               if (board[obj.y + 6][obj.x] !== 0 || board[obj.y + 5][obj.x + 1] !== 0) check = false;
