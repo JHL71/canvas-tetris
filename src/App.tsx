@@ -19,18 +19,24 @@ function App() {
     type: Math.ceil(Math.random() * 7),
     rotate: 0
   });
-  const tRef:any = useRef();
+  const tRef:any = useRef(0);
   const objRef = useRef(obj);
   const [board, setBoard] = useState<any[][]> (Array.from({length: 28}, (_, i) => i !== 24 
   ? Array.from({length: 12}, (_, i) => (i === 0 || i === 11) ? 255 : 0)
   : Array(12).fill(255)));
   const boardRef = useRef(board);
   const falling = useRef(1000);
+  const [ft, setFt] = useState<number>(1000);
   const list = [1, 2, 3, 4, 5, 6, 7];
   
 
   const playGame = () => {
-    // let x = objRef.current.x;
+    if (falling.current > 200) {
+      falling.current -= 5;
+    }
+    if (falling.current % 100 === 0) {
+      setFt(falling.current);
+    }
     let {x, y, type, rotate} = {...objRef.current}
     let check = true;
     switch (type) {
@@ -246,7 +252,7 @@ function App() {
       }
       
       let nxtType = [...list.slice(0, list.indexOf(type)), ...list.slice(list.indexOf(type) + 1)][Math.ceil(Math.random() * 100) % 6];
-
+      
       setBoard([...boardRef.current]);
       setObj({x: 5, y: 0, type: nxtType, rotate: 0});
       objRef.current = {x: 5, y: 0, type: nxtType, rotate: 0};
@@ -1371,10 +1377,18 @@ function App() {
   }
 
   useEffect(() => {
-    if (start) tRef.current = setInterval(() => {playGame()}, falling.current);
+    if (start) {
+      if (tRef.current) {
+        clearInterval(tRef.current);
+        tRef.current = setInterval(() => {playGame()}, ft);
+      }
+      else {
+        tRef.current = setInterval(() => {playGame()}, ft);
+      }
+    } 
     else clearInterval(tRef.current);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [start])
+  }, [start, ft])
 
   useEffect(() => {
     keyRef.current?.focus();
@@ -1405,12 +1419,14 @@ function App() {
               setStart(false);
               let nt = Math.ceil(Math.random() * 7);
               setObj({x: 5, y: 0, type: nt, rotate: 0});
+              setFt(1000);
+              falling.current = 1000;
               objRef.current = {x: 5, y: 0, type: nt, rotate: 0};
             }}>reset</button>
           </div>
         </div>
         <div ref={keyRef} className='control' onKeyDown={(e) => {
-          control(e.key);
+          if (start) control(e.key);
           }} tabIndex={0}></div>
       </div>
     </div>
