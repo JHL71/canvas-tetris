@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import GameOver from './gameover';
+import Pause from './pause';
 
 interface objI {
   x: number,
@@ -15,6 +16,7 @@ function App() {
   const [score, setScore] = useState<number>(0)
   const [start, setStart] = useState<boolean>(false);
   const [over, setOver] = useState<boolean>(false);
+  const [pause, setPause] = useState<boolean>(false);
   const [obj, setObj] = useState<objI>({
     x: 5,
     y: 0,
@@ -407,6 +409,11 @@ function App() {
     let dx = 0;
     let dy = 0;
     switch (key) {
+      case 'Meta':
+      case 'Escape':
+        setPause(true);
+        setStart(false);
+        break;
       case ' ':
         let ts = score;
         switch (obj.type) {
@@ -1417,6 +1424,11 @@ function App() {
           boardRef={boardRef}/>
           : <></>
       }
+      {
+        pause
+          ? <Pause setPause={setPause} setStart={setStart}/>
+          : <></>
+      }
       <div className='background' onClick={() => keyRef.current?.focus()}>
         <div className='wrap'>
           <canvas ref={cvRef} className='board' width={360} height={630}></canvas>
@@ -1425,7 +1437,10 @@ function App() {
             <div className='score'>{score}</div>
             <div className='button_wrap'>
               <button className='button' onClick={() => setStart(true)}>start</button>
-              <button className='button' onClick={() => setStart(false)}>pause</button>
+              <button className='button' onClick={() => {
+                setStart(false)
+                setPause(true);
+                }}>pause</button>
               <button className='button' onClick={() => {
                 setScore(0);
                 setBoard(Array.from({length: 26}, (_, i) => i !== 24 
