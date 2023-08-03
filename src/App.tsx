@@ -307,38 +307,38 @@ function App() {
             ctx.fillStyle = 'black';
             ctx.fill();
           } else if (boardRef.current[i+4][j] === 1) {
-            ctx.rect(j * 30, i * 30, 30, 30);
-            ctx.fillStyle = 'red';
+            ctx.rect(j * 30 + 1, i * 30 + 1, 28, 28);
+            ctx.fillStyle = 'tomato';
             ctx.fill();
           } else if (boardRef.current[i+4][j] === 2) {
-            ctx.rect(j * 30, i * 30, 30, 30);
-            ctx.fillStyle = 'orange';
+            ctx.rect(j * 30 + 1, i * 30 + 1, 28, 28);
+            ctx.fillStyle = 'darkorange';
             ctx.fill();
           } else if (boardRef.current[i+4][j] === 3) {
-            ctx.rect(j * 30, i * 30, 30, 30);
-            ctx.fillStyle = 'yellow';
+            ctx.rect(j * 30 + 1, i * 30 + 1, 28, 28);
+            ctx.fillStyle = 'gold';
             ctx.fill();
           } else if (boardRef.current[i+4][j] === 4) {
-            ctx.rect(j * 30, i * 30, 30, 30);
-            ctx.fillStyle = 'green';
+            ctx.rect(j * 30 + 1, i * 30 + 1, 28, 28);
+            ctx.fillStyle = 'chartreuse';
             ctx.fill();
           } else if (boardRef.current[i+4][j] === 5) {
-            ctx.rect(j * 30, i * 30, 30, 30);
-            ctx.fillStyle = 'blue';
+            ctx.rect(j * 30 + 1, i * 30 + 1, 28, 28);
+            ctx.fillStyle = 'dodgerblue';
             ctx.fill();
           } else if (boardRef.current[i+4][j] === 6) {
-            ctx.rect(j * 30, i * 30, 30, 30);
-            ctx.fillStyle = 'indigo';
+            ctx.rect(j * 30 + 1, i * 30 + 1, 28, 28);
+            ctx.fillStyle = 'navy';
             ctx.fill();
           } else if (boardRef.current[i+4][j] === 7) {
-            ctx.rect(j * 30, i * 30, 30, 30);
-            ctx.fillStyle = 'purple';
+            ctx.rect(j * 30 + 1, i * 30 + 1, 28, 28);
+            ctx.fillStyle = 'violet';
             ctx.fill();
           } else {
             ctx.rect(j * 30, i * 30, 30, 30);
-            ctx.strokeStyle = 'black';
-            ctx.stroke();
           }
+          ctx.strokeStyle = 'black';
+          ctx.stroke();
           ctx.closePath();
         }
       }
@@ -359,40 +359,56 @@ function App() {
           ctx.resetTransform();
           ctx.translate(x, y);
           ctx.rotate((Math.PI * 90 * rotate) / 180);
-          ctx.rect(-30, -30, 60, 60);
-          ctx.fillStyle = 'red';
+          ctx.rect(-29, -29, 28, 28);
+          ctx.rect(-29, 1, 28, 28);
+          ctx.rect(1, -29, 28, 28);
+          ctx.rect(1, 1, 28, 28);
+          ctx.fillStyle = 'tomato';
           break;
         case 2:
-          ctx.fillStyle = 'orange';
-          ctx.rect(-15, -45, 30, 60);
-          ctx.rect(15, -15, 30, 60);
+          ctx.fillStyle = 'darkorange';
+          ctx.rect(-14, -44, 28, 28);
+          ctx.rect(-14, -14, 28, 28);
+          ctx.rect(16, -14, 28, 28);
+          ctx.rect(16, 16, 28, 28);
           break;
         case 3:
-          ctx.fillStyle = 'yellow';
-          ctx.rect(-45, -15, 30, 60);
-          ctx.rect(-15, -45, 30, 60);
+          ctx.fillStyle = 'gold';
+          ctx.rect(-44, -14, 28, 28);
+          ctx.rect(-44, 16, 28, 28);
+          ctx.rect(-14, -44, 28, 28);
+          ctx.rect(-14, -14, 28, 28);
           break;
         case 4:
-          ctx.fillStyle = 'green';
-          ctx.rect(-15, -45, 60, 30);
-          ctx.rect(-15, -15, 30, 60);
+          ctx.fillStyle = 'chartreuse';
+          ctx.rect(-14, -44, 28, 28);
+          ctx.rect(16, -44, 28, 28);
+          ctx.rect(-14, -14, 28, 28);
+          ctx.rect(-14, 16, 28, 28);
           break;
         case 5:
-          ctx.fillStyle = 'blue';
-          ctx.rect(- 45,- 45, 60, 30);
-          ctx.rect(-15, -15, 30, 60);
+          ctx.fillStyle = 'dodgerblue';
+          ctx.rect(-44, -44, 28, 28);
+          ctx.rect(-14, -44, 28, 28);
+          ctx.rect(-14, -14, 28, 28);
+          ctx.rect(-14, 16, 28, 28);
           break;
         case 6:
-          ctx.fillStyle = 'indigo';
-          ctx.rect(-45, -15, 90, 30);
-          ctx.rect(-15, -45, 30, 30);
+          ctx.fillStyle = 'navy';
+          ctx.rect(-44, -14, 28, 28);
+          ctx.rect(-14, -14, 28, 28);
+          ctx.rect(16, -14, 28, 28);
+          ctx.rect(-14, -44, 28, 28);
           break;
         case 7:
-          ctx.fillStyle = 'purple';
+          ctx.fillStyle = 'violet';
           ctx.resetTransform()
           ctx.translate(x, y);
           ctx.rotate((Math.PI * 90 * rotate) / 180);
-          ctx.rect(0, -60, 30, 120);
+          ctx.rect(1, -59, 28, 28);
+          ctx.rect(1, -29, 28, 28);
+          ctx.rect(1, 1, 28, 28);
+          ctx.rect(1, 31, 28, 28);
           break;
         default:
           break;
