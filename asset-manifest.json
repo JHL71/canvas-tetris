@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/canvas-tetris/static/css/main.e34948f7.css",
+    "main.js": "/canvas-tetris/static/js/main.e8692690.js",
+    "index.html": "/canvas-tetris/index.html",
+    "main.e34948f7.css.map": "/canvas-tetris/static/css/main.e34948f7.css.map",
+    "main.e8692690.js.map": "/canvas-tetris/static/js/main.e8692690.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e34948f7.css",
+    "static/js/main.e8692690.js"
+  ]
+}
